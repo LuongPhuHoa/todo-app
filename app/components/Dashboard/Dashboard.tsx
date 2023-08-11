@@ -5,12 +5,14 @@ import Image from "next/image";
 import { Task } from "../Task";
 import { useState } from "react";
 import { Modal } from "../Modal";
+import Link from "next/link";
 
 export const Dashboard = () => {
   const [modalState, setModalState] = useState(false);
   return (
     <div className="flex flex-col justify-between">
       <header className="flex flex-col justify-between items-center bg-pink-200 w-full p-10">
+        {/* <Link href="/">Home</Link> */}
         <div className="flex flex-col justify-between items-center">
           <Image src="/avatar.png" alt="Banner" width={75} height={70} />
         </div>
