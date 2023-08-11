@@ -1,38 +1,43 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { loginUser } from "./thunks";
+import { User } from "@/database";
 
-const initialState = {
-  currentUser: null,
-  isLoggedIn: false,
-  error: false,
+export interface AuthState {
+    currentUser: User | null;
+    isLogIn: boolean;
+    error: string | null;
+}
+
+const initialState: AuthState = {
+    currentUser: null,
+    isLogIn: false,
+    error: null,
 };
 
 export const authSlice = createSlice({
-  name: "auth",
-  initialState,
-  reducers: {
-    login(state, action) {
-      state.isLoggedIn = true;
-      state.error = false;
-      state.currentUser = action.payload;
+    name: "auth",
+    initialState,
+    reducers: {
+        logOut: (state) => {
+            state.currentUser = null;
+            state.isLogIn = false;
+            state.error = null;
+        }
     },
-    logout(state) {
-      state.isLoggedIn = false;
-      state.currentUser = null;
+    extraReducers: {
+        [loginUser.pending.type]: (state) => {
+            state.error = null;
+        },
+        [loginUser.fulfilled.type]: (state, action: PayloadAction<User>) => {
+            state.currentUser = action.payload;
+            state.isLogIn = true;
+        },
+        [loginUser.rejected.type]: (state, action: PayloadAction<string>) => {
+            state.error = action.payload;
+        },
     },
-    loginFailure(state) {
-      state.error = true;
-    },
-    register(state, action) {
-      state.isLoggedIn = true;
-      state.error = false;
-      state.currentUser = action.payload;
-    },
-    registerFailure(state) {
-        state.error = true;
-    },
-  },
 });
 
-export const { login, logout, loginFailure, register, registerFailure } = authSlice.actions;
+export const { logOut } = authSlice.actions;
 
 export default authSlice.reducer;

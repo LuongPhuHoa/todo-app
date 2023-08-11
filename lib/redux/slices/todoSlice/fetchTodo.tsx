@@ -1,5 +1,4 @@
-import { promises } from 'dns';
-import { Todo } from '../../../../database/models';
+import { Todo } from '@/database/models';
 
 export const fetchTodo = async (todo: Todo): Promise<{data: Todo}> => {
     return new Promise((resolve, reject) => {

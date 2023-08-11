@@ -9,7 +9,7 @@ export class TodoDatabase extends Dexie {
         super("TodoDatabase");
         this.version(1).stores({
             users: "++id,name,email,password",
-            todos: "++id,title,completed",
+            todos: "++id,userId,title,completed",
         });
         this.userDatabase = this.table("users");
         this.todoDatabase = this.table("todos");
