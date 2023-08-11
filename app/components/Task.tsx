@@ -1,4 +1,8 @@
-import { todoSlice, useSelector, useDispatch } from '@/lib/redux';
+import { 
+    todoSlice, 
+    useSelector, 
+    useDispatch,
+} from '@/lib/redux';
 import Image from 'next/image';
 
 export const Task = () => {

@@ -1,6 +1,9 @@
 import { useState } from 'react';
-import { useDispatch } from '@/lib/redux';
-import { todoSlice } from '@/lib/redux';
+import { 
+  useDispatch, 
+  todoSlice,
+  addTodoAsync,
+} from '@/lib/redux';
 import { Todo } from '@/lib/redux';
 
 interface ModalProps {
@@ -13,7 +16,7 @@ export const Modal: React.FC<ModalProps> = ({ setModalState }) => {
 
   const handleAddTodo = () => {
     const todo = new Todo(name);
-    dispatch(todoSlice.actions.addTodo(todo));
+    dispatch(addTodoAsync(todo));
     setModalState(false);
   };
 
