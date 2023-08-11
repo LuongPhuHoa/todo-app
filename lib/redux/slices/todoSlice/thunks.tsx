@@ -1,6 +1,6 @@
 import { createAppAsyncThunk } from '@/lib/redux/createAppAsyncThunk';
 import { fetchTodo } from './fetchTodo'
-import { Todo } from './models';
+import { Todo } from '../../../../database/models';
 import { ReduxThunkAction } from '../../store';
 import { todoSlice } from './todoSlice'
 import { selectTodos } from './selectors';
