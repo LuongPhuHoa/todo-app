@@ -1,6 +1,7 @@
 "use client"
 import React from "react";
 import Image from "next/image"
+import { useState } from "react";
 import {
     useDispatch,
     useSelector,
@@ -10,24 +11,19 @@ import {
 
 export const SignIn = () => {
     const dispatch = useDispatch();
-    const [email, setEmail] = React.useState("");
-    const [password, setPassword] = React.useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const { auth } = useSelector((state) => state);
-
-
-    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(event.target.value);
-    };
-
-    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(event.target.value);
-    };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const resultAction = dispatch(loginUser({
-            email, password
-        }));
+        dispatch(loginUser({ email, password }))
+            .then((action) => {
+                if (auth.isLogIn) {
+                    console.log('success')
+                    window.location.href='/dashboard'
+                } 
+            });   
     };
 
     return (
@@ -54,7 +50,7 @@ export const SignIn = () => {
                             id="email"
                             type="text"
                             placeholder="Enter Your Email"
-                            onChange={handleEmailChange}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                         <label className="block text-gray-700 text-sm font-bold mt-2" htmlFor="password">
                             Password
@@ -64,7 +60,7 @@ export const SignIn = () => {
                             id="password"
                             type="password"
                             placeholder="Enter Your Password"
-                            onChange={handlePasswordChange}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                         <div className="row items-center justify-center py-2">
                             <a className="inline-block align-baseline font-bold text-sm text-pink-500 hover:text-pink-700" href="#"> Forgot Password?</a>

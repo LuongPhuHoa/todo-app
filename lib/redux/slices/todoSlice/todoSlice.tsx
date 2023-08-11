@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { Todo, TodoState } from "../../../../database/models";
+import { Todo, TodoState } from "@/database";
 import { addTodoAsync } from "./thunks";
 
 const initialState: TodoState = {

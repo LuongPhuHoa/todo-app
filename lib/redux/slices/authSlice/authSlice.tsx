@@ -18,26 +18,22 @@ export const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
+        logIn: (state, action: PayloadAction<User>) => {
+            state.currentUser = action.payload;
+            state.isLogIn = true;
+        },
+        loginFailure: (state, action: PayloadAction<string>) => {
+            state.isLogIn = false;
+            state.error = action.payload;
+        },
         logOut: (state) => {
             state.currentUser = null;
             state.isLogIn = false;
             state.error = null;
         }
     },
-    extraReducers: {
-        [loginUser.pending.type]: (state) => {
-            state.error = null;
-        },
-        [loginUser.fulfilled.type]: (state, action: PayloadAction<User>) => {
-            state.currentUser = action.payload;
-            state.isLogIn = true;
-        },
-        [loginUser.rejected.type]: (state, action: PayloadAction<string>) => {
-            state.error = action.payload;
-        },
-    },
 });
 
-export const { logOut } = authSlice.actions;
+export const { logIn, loginFailure, logOut } = authSlice.actions;
 
 export default authSlice.reducer;

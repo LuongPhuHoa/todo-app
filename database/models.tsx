@@ -1,6 +1,6 @@
 export class User {
-    id: number;
-    name: string;
+    id?: number;
+    name?: string;
     email: string;
     password: string;
 
@@ -19,7 +19,7 @@ export class Todo {
     title: string;
     completed: boolean;
 
-    constructor(userId:number, title: string) {
+    constructor(userId: number, title: string) {
         this.id = ++Todo.lastId;
         this.userId = userId;
         this.title = title;

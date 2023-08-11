@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { 
   useDispatch, 
+  useSelector,
   todoSlice,
   addTodoAsync,
 } from '@/lib/redux';
-import { Todo } from '@/lib/redux';
+import { Todo } from '@/database';
 
 interface ModalProps {
   setModalState: (state: boolean) => void;
@@ -13,9 +14,10 @@ interface ModalProps {
 export const Modal: React.FC<ModalProps> = ({ setModalState }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
+  const {auth} = useSelector((state) => state);
 
   const handleAddTodo = () => {
-    const todo = new Todo(name);
+    const todo = new Todo(auth.currentUser?.id ?? 0, name);
     dispatch(addTodoAsync(todo));
     setModalState(false);
   };
