@@ -23,6 +23,9 @@ export const todoSlice = createSlice({
                 return todo;
             });
         },
+        setTodo: (state, action: PayloadAction<Todo[]>) => {
+            state.todos = action.payload;
+        },
     },
 });
 
