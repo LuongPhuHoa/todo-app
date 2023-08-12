@@ -6,24 +6,22 @@ import {
     useDispatch,
     useSelector,
     loginUser,
-    authSlice
 } from "@/lib/redux";
+import { Redirect } from "next";
 
 export const SignIn = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { auth } = useSelector((state) => state);
+    const user = useSelector((state) => state.user.user);
+    //handle submit return boolean value
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        dispatch(loginUser({ email, password }));
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        dispatch(loginUser({ email, password }))
-            .then((action) => {
-                if (auth.isLogIn) {
-                    console.log('success')
-                    window.location.href='/dashboard'
-                } 
-            });   
+        if (user.isLogin) {
+            return window.location.href = "/dashboard";
+        }
     };
 
     return (

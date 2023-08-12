@@ -1,7 +1,6 @@
 import { createAppAsyncThunk } from "../../createAppAsyncThunk";
 import { db, User } from "@/database";
-import { fetchAuth } from "./fetchAuth";
-import { logIn, loginFailure } from "./authSlice";
+import { logIn, loginFailure } from "./userSlice";
 
 //check if the inputted user matches the database and return the User object
 export const loginUser = (user: User) => async (dispatch: any) => {

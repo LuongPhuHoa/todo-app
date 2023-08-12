@@ -1,29 +1,22 @@
 import { createAppAsyncThunk } from '@/lib/redux/createAppAsyncThunk';
-import { fetchTodo } from './fetchTodo'
 import { Todo } from '../../../../database/models';
-import { ReduxThunkAction } from '../../store';
-import { todoSlice } from './todoSlice'
-import { selectTodos } from './selectors';
+import { db } from '@/database';
 
-export const addTodoAsync = createAppAsyncThunk( 
-    'todo/fetchTodos',
+export const addTodoAsync = createAppAsyncThunk(
+    'todo/addTodo',
     async (todo: Todo) => {
-        const task = await fetchTodo(todo);
+        const { title, userId } = todo;
+        const newTodo = new Todo(
+            userId,
+            title,
+        );
 
-        return task.data;
+        await db.todoDatabase.add(newTodo);
+
+        return newTodo;
     },
 );
 
-// export const AddTodoAsync = (todo: Todo): ReduxThunkAction => (dispatch, getState) => {
-//     const todos = selectTodos(getState());
 
-//     const isTodoExist = todos.find((item) => item.title === todo.title);
-
-//     if (isTodoExist) {
-//         return;
-//     }
-
-//     dispatch(todoSlice.actions.addTodo(todo));
-// }
 
 

@@ -3,24 +3,22 @@ export class User {
     name?: string;
     email: string;
     password: string;
+    isLogin?: boolean;
 
-    constructor(name: string, email: string, password: string) {
-        this.id = 0;
-        this.name = name;
+    constructor(email: string, password: string) {
         this.email = email;
         this.password = password;
     }
 }
 
 export class Todo {
-    static lastId = 0;
     id: number;
     userId: number;
     title: string;
     completed: boolean;
 
     constructor(userId: number, title: string) {
-        this.id = ++Todo.lastId;
+        this.id = Date.now();
         this.userId = userId;
         this.title = title;
         this.completed = false;
@@ -29,4 +27,8 @@ export class Todo {
 
 export interface TodoState {
     todos: Todo[];
+}
+
+export interface UserState {
+    user: User;
 }

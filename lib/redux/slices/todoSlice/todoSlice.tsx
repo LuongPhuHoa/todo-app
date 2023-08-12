@@ -37,4 +37,4 @@ export const todoSlice = createSlice({
 
 export const { addTodo, removeTodo, toggleTodo } = todoSlice.actions;
 
-export const store = todoSlice.reducer;
+export const Todostore = todoSlice.reducer;

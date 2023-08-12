@@ -5,11 +5,11 @@ import Image from "next/image";
 import { Task } from "../Task";
 import { useState } from "react";
 import { Modal } from "../Modal";
-import Link from "next/link";
+import { useSelector } from "@/lib/redux";
 
 export const Dashboard = () => {
   const [modalState, setModalState] = useState(false);
-
+  const currentUser = useSelector((state) => state.user);
   return (
     <div className="flex flex-col justify-between">
       <header className="flex flex-col justify-between items-center bg-pink-200 w-full p-10">
@@ -18,7 +18,7 @@ export const Dashboard = () => {
         </div>
         <div className="flex flex-col justify-between items-center">
           <h1 className="text-4xl font-normal text-center p-5">
-            Welcome, Leah D'costa
+            {currentUser.name}
           </h1>
         </div>
       </header>
