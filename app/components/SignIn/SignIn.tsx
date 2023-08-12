@@ -13,8 +13,8 @@ export const SignIn = () => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const user = useSelector((state) => state.user.user);
-    //handle submit return boolean value
+    const user = useSelector((state) => state.user);
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(loginUser({ email, password }));

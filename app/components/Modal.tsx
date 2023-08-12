@@ -15,7 +15,7 @@ export const Modal: React.FC<ModalProps> = ({ setModalState }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state);
 
   const handleAddTodo = () => {
     const todo = new Todo( Number(user.id), name );
