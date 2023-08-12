@@ -7,6 +7,7 @@ import Image from 'next/image';
 
 export const Task = () => {
     const todos = useSelector((state) => state.todo.todos);
+    console.log(todos);
     const dispatch = useDispatch();
 
     const handleToggle = (id: number) => {

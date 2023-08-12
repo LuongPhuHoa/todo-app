@@ -1,6 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { Todo, TodoState } from "@/database";
-import { addTodoAsync } from "./thunks";
 
 const initialState: TodoState = {
     todos: [],
@@ -28,11 +27,6 @@ export const todoSlice = createSlice({
             state.todos = action.payload;
         },
     },
-    extraReducers: (builder) => {
-        builder.addCase(addTodoAsync.fulfilled, (state, action) => {
-            state.todos.push(action.payload);
-        });
-    }
 });
 
 export const { addTodo, removeTodo, toggleTodo } = todoSlice.actions;

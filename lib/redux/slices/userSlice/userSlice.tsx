@@ -2,6 +2,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { loginUser } from "./thunks";
 import { User, UserState } from "@/database";
 
+
 // const initialState: User = {
 //     id: 0,
 //     name: "",

@@ -17,6 +17,21 @@ export const addTodoAsync = createAppAsyncThunk(
     },
 );
 
+export const deleteTodoAsync = createAppAsyncThunk(
+    'todo/deleteTodo',
+    async (todo: Todo) => {
+        await db.todoDatabase.delete(todo.id);
+        return todo;
+    }
+);
+
+export const updateTodoAsync = createAppAsyncThunk(
+    'todo/updateTodo',
+    async (todo: Todo) => {
+        await db.todoDatabase.update(todo.id, todo);
+        return todo;
+    }
+);
 
 
 

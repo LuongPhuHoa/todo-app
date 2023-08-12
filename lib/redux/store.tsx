@@ -5,6 +5,7 @@ import {
   useDispatch as useReduxDispatch,
   type TypedUseSelectorHook,
 } from 'react-redux'
+import { persistStore } from 'redux-persist'
 
 /* Instruments */
 import { reducer } from './rootReducer'
@@ -18,6 +19,7 @@ export const reduxStore = configureStore({
 })
 export const useDispatch = () => useReduxDispatch<ReduxDispatch>()
 export const useSelector: TypedUseSelectorHook<ReduxState> = useReduxSelector
+export const persistor = persistStore(reduxStore);
 
 /* Types */
 export type ReduxStore = typeof reduxStore

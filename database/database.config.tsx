@@ -13,8 +13,20 @@ export class TodoDatabase extends Dexie {
         });
         this.userDatabase = this.table("users");
         this.todoDatabase = this.table("todos");
+        
+    }
+
+    getUser = async () => {
+        const user = await this.userDatabase.toArray();
+        return user[0];
+    }
+
+    setUser = async (user: User) => {
+        await this.userDatabase.clear();
+        await this.userDatabase.add(user);
     }
 }
 
 export const db = new TodoDatabase();
+
 export default db;

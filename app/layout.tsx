@@ -7,6 +7,8 @@ import styles from './styles/layout.module.css'
 import './styles/globals.css'
 import { useEffect } from "react"
 import { db, initialData } from "@/database"
+import { PersistGate } from 'redux-persist/integration/react'
+import { persistor, reduxStore } from '@/lib/redux'
 
 export default function RootLayout(props: React.PropsWithChildren) {
   useEffect(() => {
@@ -20,14 +22,16 @@ export default function RootLayout(props: React.PropsWithChildren) {
   }, [])
   return (
     <Providers>
-      <html lang="en">
-        <body>
-          <section className={styles.container}>
-            <Nav />
-            <main className={styles.main}>{props.children}</main>
-          </section>
-        </body>
-      </html>
+      {/* <PersistGate loading={null} persistor={ persistor }> */}
+        <html lang="en">
+          <body>
+            <section className={styles.container}>
+              <Nav />
+              <main className={styles.main}>{props.children}</main>
+            </section>
+          </body>
+        </html>
+      {/* </PersistGate> */}
     </Providers>
   )
 }

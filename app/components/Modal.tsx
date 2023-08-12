@@ -14,10 +14,11 @@ interface ModalProps {
 export const Modal: React.FC<ModalProps> = ({ setModalState }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
-  const {auth} = useSelector((state) => state);
+  
+  const { user } = useSelector((state) => state.user);
 
   const handleAddTodo = () => {
-    const todo = new Todo(auth.currentUser?.id ?? 0, name);
+    const todo = new Todo( Number(user.id), name );
     dispatch(addTodoAsync(todo));
     setModalState(false);
   };
