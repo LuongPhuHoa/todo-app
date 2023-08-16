@@ -13,7 +13,7 @@ export const Home = () => {
                     width={268}
                     height={189}
                 />
-            L</div>
+            </div>
             <div className="row items-center justify-center text-center align-middle p-5 gap-5">
                 <h1 className="text-4xl font-bold text-center p-5">Get Things Done With TODO!</h1>
                 <p className="text-xl text-center">Lörem ipsum dobårade mav, barade men trest, käpelig medan keplalogi. Aling stödkorv, fådissa </p>

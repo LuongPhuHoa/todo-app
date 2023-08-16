@@ -1,5 +1,6 @@
 "use client"
 import React from "react";
+import { setCookie } from "cookies-next";
 import Image from "next/image"
 import { useState } from "react";
 import {
@@ -7,21 +8,33 @@ import {
     useSelector,
     loginUser,
 } from "@/lib/redux";
-import { Redirect } from "next";
+import { useRouter } from "next/navigation";
+import axios from 'axios';
+import { useEffect } from "react";
+
+
 
 export const SignIn = () => {
     const dispatch = useDispatch();
+    const router = useRouter();
+    const isLoggedIn = useSelector((state) => state.auth?.isLoggedIn);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const user = useSelector((state) => state.user);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        dispatch(loginUser({ email, password }));
-
-        if (user.isLogin) {
-            return window.location.href = "/dashboard";
+    useEffect(() => {
+        if (isLoggedIn) {
+            
+            router.push('/dashboard');
         }
+    }, [isLoggedIn]);
+
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        const user = {
+            email: email,
+            password: password,
+        };
+        dispatch(loginUser(user));
     };
 
     return (

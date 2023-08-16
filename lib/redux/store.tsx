@@ -5,7 +5,6 @@ import {
   useDispatch as useReduxDispatch,
   type TypedUseSelectorHook,
 } from 'react-redux'
-import { persistStore } from 'redux-persist'
 
 /* Instruments */
 import { reducer } from './rootReducer'
@@ -14,12 +13,13 @@ import { middleware } from './middleware'
 export const reduxStore = configureStore({
   reducer,
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(middleware)
+    return getDefaultMiddleware(
+      { serializableCheck: false }
+    ).concat(middleware)
   },
 })
 export const useDispatch = () => useReduxDispatch<ReduxDispatch>()
 export const useSelector: TypedUseSelectorHook<ReduxState> = useReduxSelector
-export const persistor = persistStore(reduxStore);
 
 /* Types */
 export type ReduxStore = typeof reduxStore

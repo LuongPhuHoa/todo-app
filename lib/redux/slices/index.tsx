@@ -1,2 +1,2 @@
 export * from './todoSlice'
-export * from './userSlice'
+export * from './authSlice'
