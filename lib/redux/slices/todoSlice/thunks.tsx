@@ -1,4 +1,4 @@
-import { Todo, addTodo, removeTodo, toggleTodo } from "./todoSlice";
+import { Todo, addTodo, removeTodo, toggleTodo, fetchTodos } from "./todoSlice";
 import prisma from "@/prisma/client";
 
 export const addTodoAsync = (todo: Todo) => async (dispatch: any) => {
@@ -42,4 +42,14 @@ export const toggleTodoAsync = (id: number) => async (dispatch: any) => {
             },
         });
     }
+}
+
+export const fetchTodosAsync = (userID: number) => async (dispatch: any) => {
+    const todos = await prisma.todo.findMany({
+        where: {
+            userID: userID,
+        },
+    });
+
+    dispatch(fetchTodos(todos));
 }

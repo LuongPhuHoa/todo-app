@@ -34,9 +34,12 @@ export const todoSlice = createSlice({
         setTodos: (state, action: PayloadAction<Todo[]>) => {
             state.todos = action.payload;
         },
+        fetchTodos(state, action){
+            state.todos = action.payload;
+        }
     }
 });
 
-export const { addTodo, removeTodo, toggleTodo } = todoSlice.actions;
+export const { addTodo, removeTodo, toggleTodo, fetchTodos } = todoSlice.actions;
 
 export default todoSlice.reducer;
