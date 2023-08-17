@@ -22,7 +22,7 @@ export async function POST( req: Request, res: Response) {
 	} );
 
 	if ( user.length === 0 ) {
-		 		return NextResponse.error();
+		return NextResponse.json( { error: "Invalid email or password" }, { status: 401 } );
 	} else {
 		const token = jwt.sign( { email }, String(process.env.JWT_KEY), { expiresIn: "12h" } );
 		return NextResponse.json( 
