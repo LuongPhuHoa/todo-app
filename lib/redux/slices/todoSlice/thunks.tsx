@@ -1,37 +1,45 @@
-import { createAppAsyncThunk } from '@/lib/redux/createAppAsyncThunk';
-import { Todo } from '../../../../database/models';
-import { db } from '@/database';
+import { Todo, addTodo, removeTodo, toggleTodo } from "./todoSlice";
+import prisma from "@/prisma/client";
 
-export const addTodoAsync = createAppAsyncThunk(
-    'todo/addTodo',
-    async (todo: Todo) => {
-        const { title, userId } = todo;
-        const newTodo = new Todo(
-            userId,
-            title,
-        );
+export const addTodoAsync = (todo: Todo) => async (dispatch: any) => {
+    dispatch(addTodo(todo));
 
-        await db.todoDatabase.add(newTodo);
+    await prisma.todo.create({
+        data: {
+            taskName: todo.taskName,
+            completed: todo.completed,
+            userID: todo.userID,
+        },
+    });
+}
 
-        return newTodo;
-    },
-);
+export const removeTodoAsync = (id: number) => async (dispatch: any) => {
+    dispatch(removeTodo(id));
 
-export const deleteTodoAsync = createAppAsyncThunk(
-    'todo/deleteTodo',
-    async (todo: Todo) => {
-        await db.todoDatabase.delete(todo.id  as number);
-        return todo;
+    await prisma.todo.delete({
+        where: {
+            id: id,
+        },
+    });
+}
+
+export const toggleTodoAsync = (id: number) => async (dispatch: any) => {
+    dispatch(toggleTodo(id));
+
+    const todo = await prisma.todo.findUnique({
+        where: {
+            id: id,
+        },
+    });
+
+    if (todo) {
+        await prisma.todo.update({
+            where: {
+                id: id,
+            },
+            data: {
+                completed: !todo.completed,
+            },
+        });
     }
-);
-
-export const updateTodoAsync = createAppAsyncThunk(
-    'todo/updateTodo',
-    async (todo: Todo) => {
-        await db.todoDatabase.update(todo.id as number, todo);
-        return todo;
-    }
-);
-
-
-
+}

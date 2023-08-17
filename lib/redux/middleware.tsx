@@ -1,5 +1,23 @@
 /* Core */
 import { createLogger } from 'redux-logger'
+import { verify } from 'jsonwebtoken'
+import { Middleware } from 'redux';
+
+const jwtMiddleware: Middleware = store => next => action => {
+  const state = store.getState();
+  const jwt = state.jwt;
+
+  if (jwt) {
+    try {
+      verify(jwt, String(process.env.JWT_KEY));
+    } catch (error) {
+      console.log('JWT Error:', error);
+    }
+  }
+  console.log('JWT:', jwt);
+  return next(action);
+};
+
 
 const middleware = [
   createLogger({
@@ -15,6 +33,7 @@ const middleware = [
     },
     predicate: () => typeof window !== 'undefined',
   }),
+  jwtMiddleware,
 ]
 
 export { middleware }

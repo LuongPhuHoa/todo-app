@@ -1,25 +1,37 @@
 import jwt from "jsonwebtoken";
 import { NextResponse } from 'next/server'
-import { db, User } from "@/database";
+import prisma from "@/prisma/client";
+
 
 export async function POST( req: Request, res: Response) {
 	const body = await req.json();
 	const { email, password } = body;
 
-	const user = await db.userDatabase
-		.where( "email" )
-		.equals( email )
-		.and( ( user: User ) => user.password === password )
-		.first();
+	// TODO: Validate email and password
+	
+	const user = await prisma.user.findMany( {
+		where: {
+			email,
+			password
+		},
+		select: {
+			email: true,
+			name: true,
+			id: true
+		}
+	} );
 
-	if ( user ) {
-		const token = jwt.sign( { email }, String(process.env.NEXT_PUBLIC_JWT_KEY), { expiresIn: "12h" } );
-		return NextResponse.redirect( "/dashboard", {
-			headers: {
-				"Set-Cookie": `token=${ token }; Path=/; HttpOnly`,
-			},
-		} );
+	if ( user.length === 0 ) {
+		 		return NextResponse.error();
 	} else {
-		return NextResponse.redirect( "/login" );
+		const token = jwt.sign( { email }, String(process.env.JWT_KEY), { expiresIn: "12h" } );
+		return NextResponse.json( 
+			{ 
+				token,
+				email: user[0].email,
+				name: user[0].name,
+				id: user[0].id
+			}
+		);
 	}
 }

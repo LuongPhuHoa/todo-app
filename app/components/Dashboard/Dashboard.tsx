@@ -1,15 +1,24 @@
-"use client";
-
 import React, { use } from "react";
 import Image from "next/image";
 import { Task } from "../Task";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal } from "../Modal";
 import { useSelector } from "@/lib/redux";
+import { useRouter } from "next/navigation";
+import { getCookie } from "cookies-next";
 
 export const Dashboard = () => {
   const [modalState, setModalState] = useState(false);
-  const currentUser = useSelector((state) => state.user);
+  const isLoggedIn = useSelector((state) => state.auth?.isLoggedIn);
+  const router = useRouter();
+  const name = getCookie("name");
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/signin");
+    }
+  }, [isLoggedIn]);
+
   return (
     <div className="flex flex-col justify-between">
       <header className="flex flex-col justify-between items-center bg-pink-200 w-full p-10">
@@ -18,7 +27,7 @@ export const Dashboard = () => {
         </div>
         <div className="flex flex-col justify-between items-center">
           <h1 className="text-4xl font-normal text-center p-5">
-            {currentUser.name}
+            {name ? name : "Welcome Back!"}
           </h1>
         </div>
       </header>

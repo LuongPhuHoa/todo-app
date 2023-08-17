@@ -5,7 +5,8 @@ import {
   todoSlice,
   addTodoAsync,
 } from '@/lib/redux';
-import { Todo } from '@/database';
+import { getCookie } from 'cookies-next';
+import { get } from 'http';
 
 interface ModalProps {
   setModalState: (state: boolean) => void;
@@ -15,10 +16,15 @@ export const Modal: React.FC<ModalProps> = ({ setModalState }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   
-  const { user } = useSelector((state) => state);
+  const user = useSelector((state) => state.auth.user);
 
   const handleAddTodo = () => {
-    const todo = new Todo( Number(user.id), name );
+    const todo = {
+      id: Math.floor(Math.random() * 1000),
+      taskName: name,
+      completed: false,
+      userID: Number(getCookie('id')),
+    }
     dispatch(addTodoAsync(todo));
     setModalState(false);
   };
