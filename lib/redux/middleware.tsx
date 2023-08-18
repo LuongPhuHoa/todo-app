@@ -1,23 +1,25 @@
 /* Core */
 import { createLogger } from 'redux-logger'
 import { verify } from 'jsonwebtoken'
-import { Middleware } from 'redux';
 
-const jwtMiddleware: Middleware = store => next => action => {
-  const state = store.getState();
-  const jwt = state.jwt;
 
-  if (jwt) {
-    try {
-      verify(jwt, String(process.env.JWT_KEY));
-    } catch (error) {
-      console.log('JWT Error:', error);
+/* Instruments */
+import { getCookie } from 'cookies-next'
+
+const jwtMiddleware = ({ dispatch }: any) => (next: any) => (action: any) => {
+  if (typeof action === 'function') {
+    const token = getCookie('token')
+    if (token) {
+      const decodedToken = verify(String(token), String(process.env.NEXT_PUBLIC_JWT_SECRET))
+      if (decodedToken) {
+        dispatch({ type: 'AUTHENTICATED' })
+      } else {
+        dispatch({ type: 'NOT_AUTHENTICATED' })
+      }
     }
   }
-  console.log('JWT:', jwt);
-  return next(action);
-};
-
+  next(action)
+}
 
 const middleware = [
   createLogger({

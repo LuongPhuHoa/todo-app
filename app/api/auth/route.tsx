@@ -1,37 +1,48 @@
-import jwt from "jsonwebtoken";
+/* Core */
 import { NextResponse } from 'next/server'
-import prisma from "@/prisma/client";
+import jwt from "jsonwebtoken";
+import prisma from '@/prisma';
 
+export async function POST(req: Request, res: Response) {
+  const body = await req.json();
+  const { email, password } = body;
 
-export async function POST( req: Request, res: Response) {
-	const body = await req.json();
-	const { email, password } = body;
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        email,
+        password,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
 
-	// TODO: Validate email and password
-	
-	const user = await prisma.user.findMany( {
-		where: {
-			email,
-			password
-		},
-		select: {
-			email: true,
-			name: true,
-			id: true
-		}
-	} );
+    await new Promise((r) => setTimeout(r, 500))
 
-	if ( user.length === 0 ) {
-		return NextResponse.json( { error: "Invalid email or password" }, { status: 401 } );
-	} else {
-		const token = jwt.sign( { email }, String(process.env.JWT_KEY), { expiresIn: "12h" } );
-		return NextResponse.json( 
-			{ 
-				token,
-				email: user[0].email,
-				name: user[0].name,
-				id: user[0].id
-			}
-		);
-	}
+    if (!user) {
+      return NextResponse.error();
+    } else {
+      const token = jwt.sign({ 
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      }, 
+      String(process.env.JWT_SECRET), {
+        expiresIn: "1d",
+      });
+
+      return NextResponse.json({
+        token,
+        name: user.name,
+        email: user.email,
+        id: user.id,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    return NextResponse.error();
+  }
 }

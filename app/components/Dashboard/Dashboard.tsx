@@ -27,7 +27,7 @@ export const Dashboard = () => {
         </div>
         <div className="flex flex-col justify-between items-center">
           <h1 className="text-4xl font-normal text-center p-5">
-            {name ? name : "Welcome Back!"}
+            {name}
           </h1>
         </div>
       </header>

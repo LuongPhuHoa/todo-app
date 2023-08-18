@@ -3,16 +3,21 @@ import {
     useSelector, 
     useDispatch,
     toggleTodoAsync,
-    removeTodoAsync
+    removeTodoAsync,
+    getTodos
 } from '@/lib/redux';
 import Image from 'next/image';
-import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { getCookie } from 'cookies-next';
 
 export const Task = () => {
     const dispatch = useDispatch();
-    const todos = useSelector((state) => state.todo?.todos);
+    const todos = useSelector((state) => state.todo.todos);
+    const userID = getCookie("id");
+
+    useEffect(() => {
+        dispatch(getTodos(Number(userID)));
+    }, []);
 
     const handleToggle = (id: number) => {
         dispatch(toggleTodoAsync(id));

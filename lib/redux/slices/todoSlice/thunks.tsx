@@ -1,55 +1,30 @@
 import { Todo, addTodo, removeTodo, toggleTodo, fetchTodos } from "./todoSlice";
-import prisma from "@/prisma/client";
+import axios from "axios";
 
 export const addTodoAsync = (todo: Todo) => async (dispatch: any) => {
-    dispatch(addTodo(todo));
-
-    await prisma.todo.create({
-        data: {
-            taskName: todo.taskName,
-            completed: todo.completed,
-            userID: todo.userID,
-        },
-    });
+    const newTodo = await axios.post("/api/createTodo", todo);
+    dispatch(addTodo({
+        id: newTodo.data.todo.id,
+        taskName: newTodo.data.todo.taskName,
+        completed: newTodo.data.todo.completed,
+        userID: newTodo.data.todo.userID,
+    }));
 }
 
 export const removeTodoAsync = (id: number) => async (dispatch: any) => {
-    dispatch(removeTodo(id));
-
-    await prisma.todo.delete({
-        where: {
-            id: id,
-        },
-    });
+    const todo = await axios.post("/api/removeTodo", { id });
+    dispatch(removeTodo(todo.data.todo.id));
 }
 
 export const toggleTodoAsync = (id: number) => async (dispatch: any) => {
-    dispatch(toggleTodo(id));
-
-    const todo = await prisma.todo.findUnique({
-        where: {
-            id: id,
-        },
-    });
-
-    if (todo) {
-        await prisma.todo.update({
-            where: {
-                id: id,
-            },
-            data: {
-                completed: !todo.completed,
-            },
-        });
-    }
+    const todo = await axios.post("/api/toggleTodo", { id });
+    dispatch(toggleTodo(todo.data.todo.id));
 }
 
-export const fetchTodosAsync = (userID: number) => async (dispatch: any) => {
-    const todos = await prisma.todo.findMany({
-        where: {
-            userID: userID,
-        },
-    });
-
-    dispatch(fetchTodos(todos));
+export function getTodos(userID: number) {
+    return async function fetchTodosThunk(dispatch: any) {
+        const { data } = await axios.post("/api/todo", { userID });
+        console.log(data);
+        dispatch(fetchTodos(data.todos));
+    }
 }

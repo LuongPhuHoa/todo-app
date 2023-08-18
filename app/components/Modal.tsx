@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { 
-  useDispatch, 
+import {
+  useDispatch,
   useSelector,
   todoSlice,
   addTodoAsync,
 } from '@/lib/redux';
 import { getCookie } from 'cookies-next';
-import { get } from 'http';
+
 
 interface ModalProps {
   setModalState: (state: boolean) => void;
@@ -15,8 +15,6 @@ interface ModalProps {
 export const Modal: React.FC<ModalProps> = ({ setModalState }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
-  
-  const user = useSelector((state) => state.auth.user);
 
   const handleAddTodo = () => {
     const todo = {
@@ -25,6 +23,7 @@ export const Modal: React.FC<ModalProps> = ({ setModalState }) => {
       completed: false,
       userID: Number(getCookie('id')),
     }
+
     dispatch(addTodoAsync(todo));
     setModalState(false);
   };

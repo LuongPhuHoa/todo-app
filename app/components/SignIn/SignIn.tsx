@@ -14,26 +14,29 @@ export const SignIn = () => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        try {
-            const { data } = await axios.post("/api/auth", {
-                email,
-                password,
-            }) ;
-    
-            console.log(data);
-            
-            if (data.token) {
-                setCookie("token", data.token);
-                setCookie("name", data.name);
-                setCookie("email", data.email);
-                setCookie("id", data.id);
-                dispatch(loginUser(data.token));
-                router.push("/dashboard");
-            }
-        } catch (error) {
-            console.error(error);
+         
+        const { data } = await axios.post("/api/auth", {
+            email,
+            password,
+        });
+
+        console.log(data);
+
+        if (data.error) {
+            alert(data.error);
+        } else {
+            dispatch(loginUser({
+                token: data.token,
+                name: data.name,
+                email: data.email,
+                id: data.id,
+            }));
+            setCookie("token", data.token);
+            setCookie("name", data.name);
+            setCookie("email", data.email);
+            setCookie("id", data.id);
+            router.push("/dashboard");
         }
-        
     }
 
     return (
