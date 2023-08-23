@@ -11,6 +11,7 @@ export const SignIn = () => {
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const isLogged = useSelector((state) => state.auth.isLoggedIn);
 
     useEffect(() => {
         if (getCookie("token")) {
@@ -20,28 +21,15 @@ export const SignIn = () => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-         
-        const { data } = await axios.post("/api/auth/signin", {
-            email,
-            password,
-        });
-
-        // console.log(data);
-
-        if (data.error) {
-            alert(data.error);
-        } else {
-            dispatch(loginUser({
-                token: data.token,
-                name: data.name,
-                email: data.email,
-                id: data.id,
-            }));
-            setCookie("token", data.token);
-            setCookie("name", data.name);
-            setCookie("email", data.email);
-            setCookie("id", data.id);
+        
+        try {
+            await dispatch(loginUser({
+                email,
+                password,
+            })).unwrap();
             router.push("/dashboard");
+        } catch (err) {
+            console.log(err);
         }
     }
 

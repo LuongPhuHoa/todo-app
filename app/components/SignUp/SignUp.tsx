@@ -33,7 +33,6 @@ export const SignUp = () => {
             return;
         }
         
-
         const { data } = await axios.post("/api/auth/signup", {
             fullName,
             email,
@@ -46,27 +45,14 @@ export const SignUp = () => {
             alert(data.error);
         } else {
             alert("User Created Successfully");
-            const loginData = await axios.post("/api/auth/signin", {
-                email,
-                password,
-            });
-            console.log(loginData.data);
-            if (loginData.data.error) {
-                alert(loginData.data.error);
-            } else {
-                dispatch(
-                    loginUser({
-                        token: loginData.data.token,
-                        name: loginData.data.name,
-                        email: loginData.data.email,
-                        id: loginData.data.id,
-                    })
-                );
-                setCookie("token", loginData.data.token);
-                setCookie("name", loginData.data.name);
-                setCookie("email", loginData.data.email);
-                setCookie("id", loginData.data.id);
+            try {
+                await dispatch(loginUser({
+                    email,
+                    password,
+                })).unwrap();
                 router.push("/dashboard");
+            } catch (err) {
+                console.log(err);
             }
         }
     };

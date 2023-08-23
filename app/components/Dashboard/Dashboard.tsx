@@ -3,13 +3,10 @@ import Image from "next/image";
 import { Task } from "../Task";
 import { useState, useEffect } from "react";
 import { Modal } from "../Modal";
-import { useSelector } from "@/lib/redux";
 import { useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
 import { 
   useDispatch,
-  todoSlice,
-  checkLogin,
   logoutUser
  } from "@/lib/redux";
 

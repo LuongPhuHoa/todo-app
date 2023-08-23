@@ -2,6 +2,8 @@ import { deleteCookie } from 'cookies-next';
 import { authenticate, deAuthenticate, restoreAuthState } from './authSlice';
 import { createAppAsyncThunk } from '../../createAppAsyncThunk';
 import axios from 'axios';
+import { setCookie } from 'cookies-next';
+import { useRouter } from 'next/navigation';
 
 // export const loginUser = (user: {}) => async (dispatch: any) => {
 //   dispatch(authenticate(user));
@@ -16,16 +18,23 @@ import axios from 'axios';
 //   dispatch(restoreAuthState(user));
 // };
 
-export const loginUser = createAppAsyncThunk('auth/login', async (user: {}) => {
-  return user;
+export const loginUser = createAppAsyncThunk('auth/login', async (user: { email: any, password: any }) => {
+  const { data } = await axios.post('/api/auth/signin', {
+    email: user.email,
+    password: user.password,
+  });
+
+  if (data.error) {
+    alert(data.error);
+  } else {
+    setCookie("token", data.token);
+    setCookie("name", data.name);
+    setCookie("email", data.email);
+    setCookie("id", data.id);
+  }
+  return data;
 });
 
 export const logoutUser = createAppAsyncThunk('auth/logout', async () => {
   deleteCookie('token');
-});
-
-export const checkLogin = createAppAsyncThunk('auth/verify', async () => {
-  const { data } = await axios.get('/api/auth/verify');
-  console.log(data); 
-  return data;
 });
