@@ -25,7 +25,7 @@ export const Dashboard = () => {
   return (
     <div className="flex flex-col justify-between g-3">
       <header className="flex flex-col justify-between items-center bg-pink-200 w-full p-10">
-        <div className="flex flex-col justify-between items-end">
+        <div className="flex flex-col justify-between items-end p-3">
           <button
             className="bg-pink-900 text-white font-bold py-2 px-4 rounded"
             onClick={() => {
