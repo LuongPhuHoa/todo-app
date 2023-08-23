@@ -21,7 +21,7 @@ export const SignIn = () => {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
          
-        const { data } = await axios.post("/api/auth/login", {
+        const { data } = await axios.post("/api/auth/signin", {
             email,
             password,
         });

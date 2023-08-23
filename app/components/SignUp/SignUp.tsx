@@ -46,7 +46,7 @@ export const SignUp = () => {
             alert(data.error);
         } else {
             alert("User Created Successfully");
-            const loginData = await axios.post("/api/auth/login", {
+            const loginData = await axios.post("/api/auth/signin", {
                 email,
                 password,
             });

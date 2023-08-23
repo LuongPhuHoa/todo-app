@@ -9,15 +9,36 @@ import { getCookie } from "cookies-next";
 import { 
   useDispatch,
   todoSlice,
-  checkLogin
+  checkLogin,
+  logoutUser
  } from "@/lib/redux";
 
 export const Dashboard = () => {
   const [modalState, setModalState] = useState(false);
+  const dispatch = useDispatch();
+  const router = useRouter();
   const name = getCookie("name");
+
+  useEffect(() => {
+    if (!getCookie("token")) {
+      router.push("/");
+    }
+  }, []);
+
   return (
-    <div className="flex flex-col justify-between">
+    <div className="flex flex-col justify-between g-3">
       <header className="flex flex-col justify-between items-center bg-pink-200 w-full p-10">
+        <div className="flex flex-col justify-between items-end">
+          <button
+            className="bg-pink-900 text-white font-bold py-2 px-4 rounded"
+            onClick={() => {
+              dispatch(logoutUser());
+              router.push("/");
+            }}
+          >
+            Sign Out
+          </button>
+        </div>
         <div className="flex flex-col justify-between items-center">
           <Image src="/avatar.png" alt="Banner" width={75} height={70} />
         </div>
