@@ -6,19 +6,15 @@ import { Modal } from "../Modal";
 import { useSelector } from "@/lib/redux";
 import { useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
+import { 
+  useDispatch,
+  todoSlice,
+  checkLogin
+ } from "@/lib/redux";
 
 export const Dashboard = () => {
   const [modalState, setModalState] = useState(false);
-  const isLoggedIn = useSelector((state) => state.auth?.isLoggedIn);
-  const router = useRouter();
   const name = getCookie("name");
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/signin");
-    }
-  }, [isLoggedIn]);
-
   return (
     <div className="flex flex-col justify-between">
       <header className="flex flex-col justify-between items-center bg-pink-200 w-full p-10">

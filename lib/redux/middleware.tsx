@@ -1,25 +1,5 @@
 /* Core */
 import { createLogger } from 'redux-logger'
-import { verify } from 'jsonwebtoken'
-
-
-/* Instruments */
-import { getCookie } from 'cookies-next'
-
-const jwtMiddleware = ({ dispatch }: any) => (next: any) => (action: any) => {
-  if (typeof action === 'function') {
-    const token = getCookie('token')
-    if (token) {
-      const decodedToken = verify(String(token), String(process.env.NEXT_PUBLIC_JWT_SECRET))
-      if (decodedToken) {
-        dispatch({ type: 'AUTHENTICATED' })
-      } else {
-        dispatch({ type: 'NOT_AUTHENTICATED' })
-      }
-    }
-  }
-  next(action)
-}
 
 const middleware = [
   createLogger({
@@ -35,7 +15,6 @@ const middleware = [
     },
     predicate: () => typeof window !== 'undefined',
   }),
-  jwtMiddleware,
 ]
 
 export { middleware }

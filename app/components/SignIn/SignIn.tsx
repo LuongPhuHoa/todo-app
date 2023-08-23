@@ -1,7 +1,7 @@
 "use client";
-import { setCookie } from "cookies-next";
+import { setCookie, getCookie } from "cookies-next";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { loginUser, useDispatch, useSelector } from "@/lib/redux";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -12,15 +12,21 @@ export const SignIn = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    useEffect(() => {
+        if (getCookie("token")) {
+            router.push("/dashboard");
+        }
+    }, []);
+
     const handleSubmit = async (e: any) => {
         e.preventDefault();
          
-        const { data } = await axios.post("/api/auth", {
+        const { data } = await axios.post("/api/auth/login", {
             email,
             password,
         });
 
-        console.log(data);
+        // console.log(data);
 
         if (data.error) {
             alert(data.error);

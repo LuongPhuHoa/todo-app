@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { getCookie } from 'cookies-next';
+import { loginUser, logoutUser, checkLogin } from "./thunks";
 
 const initialState = getCookie('token') ? {
     isLoggedIn: true,
@@ -24,6 +25,24 @@ export const authSlice = createSlice({
         state.isLoggedIn = true;
         state.user = action.payload;
       },
+    },
+    extraReducers: (builder) => {
+      builder.addCase(loginUser.fulfilled, (state, action) => {
+        state.isLoggedIn = true;
+        state.user = action.payload;
+      });
+      builder.addCase(logoutUser.fulfilled, (state) => {
+        state.isLoggedIn = false;
+        state.user = {};
+      });
+      builder.addCase(checkLogin.fulfilled, (state, action) => {
+        state.isLoggedIn = true;
+        state.user = action.payload;
+      });
+      builder.addCase(checkLogin.rejected, (state) => {
+        state.isLoggedIn = false;
+        state.user = {};
+      });
     },
 });
 

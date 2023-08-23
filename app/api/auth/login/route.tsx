@@ -1,7 +1,7 @@
 /* Core */
 import { NextResponse } from 'next/server'
-import jwt from "jsonwebtoken";
 import prisma from '@/prisma';
+import { sign } from "@/services/jwt"
 
 export async function POST(req: Request, res: Response) {
   const body = await req.json();
@@ -25,14 +25,9 @@ export async function POST(req: Request, res: Response) {
     if (!user) {
       return NextResponse.error();
     } else {
-      const token = jwt.sign({ 
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      }, 
-      String(process.env.JWT_SECRET), {
-        expiresIn: "1d",
-      });
+      const token = await sign(
+        String(user.id),
+      String(process.env.JWT_SECRET));
 
       return NextResponse.json({
         token,

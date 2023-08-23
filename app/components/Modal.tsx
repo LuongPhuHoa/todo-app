@@ -30,7 +30,7 @@ export const Modal: React.FC<ModalProps> = ({ setModalState }) => {
 
   return (
     <>
-      <div className="fixed inset-0 opacity-25 bg-black" />
+      <div className="fixed inset-0 opacity-25 bg-black"></div>
       <div className="fixed inset-0 flex justify-center items-center z-10">
         <div className=" bg-pink-100 rounded-xl flex flex-col justify-between items-center p-2 h-40 w-80">
           <h1 className="text-lg font-normal text-center p-2">Enter Task</h1>
